@@ -5,10 +5,9 @@ import dynamic from 'next/dynamic'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import axios from 'axios'
-import type { MapContainerProps } from 'react-leaflet'
 
-// Dynamically import Leaflet components (SSR disabled) with type hints
-const MapContainer = dynamic<MapContainerProps>(
+// Dynamically import Leaflet components (SSR disabled)
+const MapContainer = dynamic(
   () => import('react-leaflet').then((mod) => mod.MapContainer),
   { ssr: false }
 )
@@ -24,11 +23,11 @@ L.Icon.Default.mergeOptions({
   shadowUrl: '/leaflet/marker-shadow.png'
 })
 
-const Page: React.FC = () => {
+export default function Page() {
   const [position, setPosition] = useState({ lat: 20.5937, lng: 78.9629 })
   const [zoom, setZoom] = useState(4)
   const [query, setQuery] = useState('')
-  const [marker, setMarker] = useState<{ lat: number; lng: number; display_name: string } | null>(null)
+  const [marker, setMarker] = useState(null)
   const [aiProvider, setAiProvider] = useState(process.env.NEXT_PUBLIC_AI_PROVIDER || 'openai')
 
   useEffect(() => {
@@ -120,5 +119,3 @@ const Page: React.FC = () => {
     </div>
   )
 }
-
-export default Page
