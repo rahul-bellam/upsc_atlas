@@ -5,12 +5,16 @@ import dynamic from 'next/dynamic'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import axios from 'axios'
+import type { MapContainerProps } from 'react-leaflet'
 
-// Dynamically import Leaflet components (SSR disabled)
-const MapContainer = dynamic(() => import('react-leaflet').then(mod => mod.MapContainer), { ssr: false })
-const TileLayer = dynamic(() => import('react-leaflet').then(mod => mod.TileLayer), { ssr: false })
-const Marker = dynamic(() => import('react-leaflet').then(mod => mod.Marker), { ssr: false })
-const Popup = dynamic(() => import('react-leaflet').then(mod => mod.Popup), { ssr: false })
+// Dynamically import Leaflet components (SSR disabled) with type hints
+const MapContainer = dynamic<MapContainerProps>(
+  () => import('react-leaflet').then((mod) => mod.MapContainer),
+  { ssr: false }
+)
+const TileLayer = dynamic(() => import('react-leaflet').then((mod) => mod.TileLayer), { ssr: false })
+const Marker = dynamic(() => import('react-leaflet').then((mod) => mod.Marker), { ssr: false })
+const Popup = dynamic(() => import('react-leaflet').then((mod) => mod.Popup), { ssr: false })
 
 // Fix Leaflet icon paths
 delete L.Icon.Default.prototype._getIconUrl
@@ -27,9 +31,8 @@ const Page: React.FC = () => {
   const [marker, setMarker] = useState<{ lat: number; lng: number; display_name: string } | null>(null)
   const [aiProvider, setAiProvider] = useState(process.env.NEXT_PUBLIC_AI_PROVIDER || 'openai')
 
-  // Safe client-side checks (window, navigator, etc.)
   useEffect(() => {
-    // Example: any client-side only code can go here
+    // Client-only logic if needed
   }, [])
 
   async function searchPlace() {
@@ -98,7 +101,11 @@ const Page: React.FC = () => {
       </aside>
 
       <main id="map-root" className="flex-1 relative">
-        <MapContainer center={[position.lat, position.lng]} zoom={zoom} style={{ height: '100%' }}>
+        <MapContainer
+          center={[position.lat, position.lng]}
+          zoom={zoom}
+          style={{ height: '100%' }}
+        >
           <TileLayer
             attribution="&copy; OpenStreetMap contributors"
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
