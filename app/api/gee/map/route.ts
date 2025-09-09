@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server'
 import { JWT } from 'google-auth-library'
 
+// Tell Next.js this route is fully dynamic (server-side)
+export const dynamic = "force-dynamic"
+
 const PRESETS = {
   population: { imageId: 'WorldPop/GP/100m/pop', visParams: { min: 0, max: 1000, palette: ['#f7fbff','#c6dbef','#6baed6','#2171b5','#08306b'] } },
   viirs: { imageId: 'NOAA/VIIRS/DNB/MONTHLY_V1/VCMSLCFG', visParams: { min: 0, max: 60, palette: ['#000000','#4b0082','#ff8c00','#ffff00'] } },
@@ -19,6 +22,7 @@ async function getAccessToken() {
 
 export async function GET(req: Request) {
   try {
+    // Safe usage: URL is fine in SSR now because dynamic route
     const u = new URL(req.url)
     const id = u.searchParams.get('id') || 'population'
     if (!PRESETS[id]) return NextResponse.json({ error: 'Unknown preset' }, { status: 400 })
