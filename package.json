@@ -1,0 +1,33 @@
+{
+  "name": "upsc-atlas-explorer",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=18 <21"
+  },
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build --no-lint",
+    "start": "next start -p 3000"
+  },
+  "dependencies": {
+    "next": "14.2.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "leaflet": "^1.9.4",
+    "react-leaflet": "^4.2.1",
+    "swr": "^2.2.1",
+    "axios": "^1.4.0",
+    "html2canvas": "^1.4.1",
+    "google-auth-library": "^9.0.0"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.10",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.41",
+    "typescript": "^5.5.4",
+    "@types/react": "^18.2.21",
+    "@types/node": "^20.11.30",
+    "@types/leaflet": "^1.9.8"
+  }
+}

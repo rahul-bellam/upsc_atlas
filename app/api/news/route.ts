@@ -1,0 +1,2 @@
+import { NextResponse } from 'next/server'
+export async function GET(req){ const key=process.env.NEWS_KEY; if(!key) return NextResponse.json({ error:'no news key' }, { status:400 }); const q=new URL(req.url).searchParams.get('q')||'India'; const url=`https://newsapi.org/v2/everything?q=${encodeURIComponent(q)}&language=en&pageSize=6&apiKey=${key}`; const r=await fetch(url); const j=await r.json(); return NextResponse.json(j) }
