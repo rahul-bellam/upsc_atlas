@@ -13,9 +13,6 @@
     "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",
-    "types": ["node","react","leaflet"]
-  },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
-}
+    "jsx": "preserve",
+    "types": ["node", "react", "leaflet"],
+    "plugins": [
