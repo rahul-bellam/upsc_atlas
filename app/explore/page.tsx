@@ -2,7 +2,6 @@
 import dynamic from 'next/dynamic'
 import React, { useEffect, useState } from 'react'
 import 'leaflet/dist/leaflet.css'
-import L from 'leaflet'
 import axios from 'axios'
 import AIHeadlines from '../../components/AIHeadlines'
 import MapToggle from '../../components/MapToggle'
@@ -11,14 +10,28 @@ const MapContainer = dynamic(() => import('react-leaflet').then(m=>m.MapContaine
 const TileLayer = dynamic(() => import('react-leaflet').then(m=>m.TileLayer), { ssr:false })
 const Marker = dynamic(() => import('react-leaflet').then(m=>m.Marker), { ssr:false })
 const Popup = dynamic(() => import('react-leaflet').then(m=>m.Popup), { ssr:false })
-delete (L.Icon.Default as any).prototype._getIconUrl
-L.Icon.Default.mergeOptions({ iconRetinaUrl: '/leaflet/marker-icon-2x.png', iconUrl: '/leaflet/marker-icon.png', shadowUrl: '/leaflet/marker-shadow.png' })
 export default function Explore(){
   const [position, setPosition] = useState({lat:20.5937,lng:78.9629})
   const [zoom, setZoom] = useState(4)
   const [marker, setMarker] = useState(null)
   const [mapStyle, setMapStyle] = useState('physical')
-  const center = [position.lat, position.lng]
+  const center: LatLngExpression = [position.lat, position.lng]
+  useEffect(() => {
+    let isMounted = true
+    import('leaflet').then((leaflet) => {
+      if (!isMounted) return
+      const L = leaflet.default
+      delete (L.Icon.Default as any).prototype._getIconUrl
+      L.Icon.Default.mergeOptions({
+        iconRetinaUrl: '/leaflet/marker-icon-2x.png',
+        iconUrl: '/leaflet/marker-icon.png',
+        shadowUrl: '/leaflet/marker-shadow.png'
+      })
+    })
+    return () => {
+      isMounted = false
+    }
+  }, [])
   function onSearch(q){ if(!q) return; axios.get(`/api/ai/geocode?q=${encodeURIComponent(q)}`).then(res=>{ if(res.data && res.data.lat){ const lat = Number(res.data.lat), lng = Number(res.data.lng); setPosition({lat,lng}); setZoom(10); setMarker({lat,lng, display_name: res.data.display_name}) } }).catch(()=>alert('Search failed')) }
   return (
     <div className="w-screen h-screen flex">
