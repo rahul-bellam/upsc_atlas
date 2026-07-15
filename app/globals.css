@@ -1,6 +1,117 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-html, body, #__next { height: 100%; }
-.leaflet-container { height: 100%; width: 100%; }
-body { background: #f8fafc; }
+
+:root {
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #f8fafc;
+  color: #0f172a;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+a,
+input {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: #bfdbfe;
+  color: #0f172a;
+}
+
+@layer base {
+  :focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  .surface-grid {
+    background-image:
+      linear-gradient(to right, rgb(148 163 184 / 0.1) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(148 163 184 / 0.1) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  .soft-ring {
+    box-shadow: 0 0 0 1px rgb(148 163 184 / 0.08), 0 10px 30px rgb(15 23 42 / 0.06);
+  }
+
+  .paper-surface {
+    background-color: #f6f3ed;
+    background-image:
+      radial-gradient(circle at 14% 12%, rgb(255 255 255 / 0.95), transparent 30%),
+      linear-gradient(to right, rgb(120 113 108 / 0.055) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(120 113 108 / 0.055) 1px, transparent 1px);
+    background-size: auto, 30px 30px, 30px 30px;
+  }
+}
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  font-family: inherit;
+  background: #dbeafe;
+}
+
+.leaflet-control-zoom a {
+  color: #0f172a !important;
+  font-weight: 600;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 12px;
+  box-shadow: 0 12px 28px rgb(15 23 42 / 0.18);
+}
+
+.leaflet-popup-content {
+  margin: 14px 16px;
+}
+
+.leaflet-attribution-flag {
+  display: none !important;
+}
+
+@media print {
+  @page {
+    margin: 14mm;
+  }
+
+  body {
+    background: white;
+  }
+
+  .no-print,
+  .leaflet-control-container {
+    display: none !important;
+  }
+
+  .surface-grid,
+  .paper-surface {
+    background: white !important;
+  }
+
+  section,
+  article {
+    break-inside: avoid;
+  }
+}
