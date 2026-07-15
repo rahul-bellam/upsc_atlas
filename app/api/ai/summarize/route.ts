@@ -104,7 +104,7 @@ async function getReferenceSources(query: string): Promise<PlaceReference[]> {
   nominatimUrl.searchParams.set('q', query)
   nominatimUrl.searchParams.set('limit', '1')
 
-  const wikipediaUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`
+  const wikipediaUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query.replace(/\s+/g, '_'))}`
   const [nominatimResult, wikipediaResult] = await Promise.allSettled([
     fetchWithTimeout(nominatimUrl, {
       headers: {
@@ -289,7 +289,7 @@ export async function GET(request: NextRequest) {
     )
   }
 
-  const cacheKey = `profile:${query.toLocaleLowerCase()}:${resolvedLocation.toLocaleLowerCase()}`
+  const cacheKey = `profile:${query.toLowerCase()}:${resolvedLocation.toLowerCase()}`
   const cached = getFromCache<PlaceProfile>(cacheKey)
   if (cached) {
     return NextResponse.json(cached, {

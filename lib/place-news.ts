@@ -59,7 +59,7 @@ function asNewsArticle(article: NewsApiArticle): PlaceNewsArticle | null {
 export async function getPlaceNews(query: string): Promise<PlaceNewsResponse> {
   const from = sixMonthsAgo()
   const to = todayIsoDate()
-  const cacheKey = `news:${query.toLocaleLowerCase()}:${from}:${to}`
+  const cacheKey = `news:${query.toLowerCase()}:${from}:${to}`
   const cached = getFromCache<PlaceNewsResponse>(cacheKey)
   if (cached) return cached
 
@@ -85,7 +85,7 @@ export async function getPlaceNews(query: string): Promise<PlaceNewsResponse> {
   const payload = await readJsonSafely<NewsApiResponse>(response)
 
   if (!response.ok || payload?.status === 'error') {
-    const archiveUnavailable = response.status === 426 || response.status === 401 || response.status === 403
+    const archiveUnavailable = response.status === 401 || response.status === 403
     throw new NewsArchiveError(
       archiveUnavailable
         ? 'This NewsAPI plan does not permit the requested six-month archive. Upgrade its historical-search access or configure another provider.'

@@ -56,7 +56,7 @@ export default function Insights() {
 
 function InsightsContent() {
   const searchParams = useSearchParams()
-  const place = searchParams.get('topic') || searchParams.get('place') || ''
+  const place = searchParams.get('topic') || ''
   const resolvedLocation = searchParams.get('location') || place
   const profileUrl = place
     ? `/api/ai/summarize?q=${encodeURIComponent(place)}&location=${encodeURIComponent(resolvedLocation)}`

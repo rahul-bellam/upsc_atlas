@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
     )
   }
 
-  const cacheKey = `geocode:${query.toLocaleLowerCase()}`
+  const cacheKey = `geocode:${query.toLowerCase()}`
   const cached = getFromCache<GeocodeResponse>(cacheKey)
   if (cached) {
     return NextResponse.json(cached, {
